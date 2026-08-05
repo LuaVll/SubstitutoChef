@@ -1,0 +1,54 @@
+{
+  "categorias_de_funcao": [
+    {
+      "funcao": "Gordura",
+      "exemplos": "manteiga, óleo, banha, azeite, creme de leite",
+      "papel": "Dá maciez, sabor, umidade e ajuda a carregar sabores lipossolúveis.",
+      "logica_de_troca": "Trocar por outra gordura de textura parecida (sólida por sólida, líquida por líquida) mantém melhor a estrutura. Trocar sólida por líquida (ex: manteiga por óleo) deixa massas mais densas e menos aeradas."
+    },
+    {
+      "funcao": "Ligação e estrutura",
+      "exemplos": "ovo, farinha, fécula, gelatina",
+      "papel": "Prende os ingredientes entre si, dá firmeza e evita que a preparação desmanche.",
+      "logica_de_troca": "Substitutos de ligação variam por temperatura de ativação (a frio, a quente) e se também aportam umidade — importante avisar se muda o tempo de cocção."
+    },
+    {
+      "funcao": "Acidez",
+      "exemplos": "limão, vinagre, vinho branco, iogurte",
+      "papel": "Equilibra doçura e gordura, realça sabores, e em alguns casos ativa fermento químico.",
+      "logica_de_troca": "Ácidos são intercambiáveis entre si na função, mas cada um traz aroma próprio (limão é floral, vinagre é mais neutro/pungente) — trocar muda o perfil de sabor, não só a acidez."
+    },
+    {
+      "funcao": "Fermento e leveza",
+      "exemplos": "fermento em pó, fermento biológico, bicarbonato de sódio, claras em neve",
+      "papel": "Produz gás e dá volume/aeração à massa.",
+      "logica_de_troca": "Fermento químico age rápido (calor), biológico é lento (tempo de descanso) — não são sempre intercambiáveis 1:1 sem ajustar o processo, não só a quantidade."
+    },
+    {
+      "funcao": "Doçura",
+      "exemplos": "açúcar refinado, mel, açúcar mascavo, xarope de glucose",
+      "papel": "Adoça, mas também influencia cor (caramelização), umidade e conservação.",
+      "logica_de_troca": "Açúcares líquidos (mel, xarope) adicionam umidade extra — pode exigir reduzir outro líquido da receita."
+    },
+    {
+      "funcao": "Espessante e textura",
+      "exemplos": "amido de milho, farinha, creme de leite, gema de ovo",
+      "papel": "Dá corpo e cremosidade a molhos, recheios e cremes.",
+      "logica_de_troca": "Espessantes à base de amido engrossam com calor; os à base de gordura/gema engrossam por emulsão — método de incorporação muda conforme o substituto."
+    },
+    {
+      "funcao": "Sabor base / umami / salgado",
+      "exemplos": "sal, molho de peixe, caldo, queijo curado, cogumelo seco",
+      "papel": "Dá profundidade de sabor e realça os demais ingredientes.",
+      "logica_de_troca": "Substitutos de umami raramente são neutros — trocar molho de peixe por sal simples, por exemplo, perde complexidade, não só salinidade."
+    },
+    {
+      "funcao": "Bebidas e coquetelaria",
+      "exemplos": "destilados, licores, xaropes, bitters, sucos frescos",
+      "papel": "Em drinks, cada ingrediente carrega uma função de sabor (base alcoólica, doce, ácido, aromático) que precisa ser preservada em proporção.",
+      "logica_de_troca": "Trocar a base alcoólica muda o perfil do drink inteiro; trocar apenas o elemento doce/ácido/aromático é mais seguro para manter o equilíbrio da receita."
+    }
+  ],
+
+  "instrucoes_extras": "Esta base é o 'raciocínio padrão' do assistente. Ele deve identificar em qual categoria o ingrediente em falta se encaixa (pode ser mais de uma) antes de responder, e usar a lógica de troca correspondente para justificar a sugestão."
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>SubstitutoChef</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            char: { 900: '#1C1917', 800: '#292524', 700: '#3A3532' },
+            chalk: '#FAFAF9',
+            flame: { DEFAULT: '#F59E0B', dim: '#B45309' }
+          },
+          fontFamily: {
+            ticket: ['"JetBrains Mono"', 'monospace'],
+            body: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Borda serrilhada estilo comanda de cozinha, sem depender de imagem */
+    .ticket-edge {
+      background-image: linear-gradient(135deg, #1C1917 25%, transparent 25%),
+                         linear-gradient(225deg, #1C1917 25%, transparent 25%);
+      background-size: 14px 10px;
+      background-position: bottom;
+      height: 10px;
+    }
+  </style>
+</head>
+<body class="bg-char-900 font-body min-h-screen flex items-center justify-center p-0 sm:p-4">
+
+  <div class="w-full sm:max-w-md bg-char-800 sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[100dvh] sm:h-[88vh]">
+
+    <!-- Cabeçalho estilo comanda -->
+    <header class="bg-char-900 px-5 pt-5 pb-3 border-b border-dashed border-char-700">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="font-ticket font-bold text-flame text-lg tracking-tight">SUBSTITUTOCHEF</h1>
+          <p class="text-chalk/50 text-xs font-ticket mt-0.5">substituição por função · sem enrolação</p>
+        </div>
+        <div class="w-9 h-9 rounded-full bg-flame/10 border border-flame/40 flex items-center justify-center text-flame text-lg">
+          🔥
+        </div>
+      </div>
+    </header>
+    <div class="ticket-edge"></div>
+
+    <!-- Mensagens -->
+    <main id="chat-window" class="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-char-900">
+    </main>
+
+    <div id="typing-indicator" class="hidden px-4 pb-1 text-xs text-chalk/40 font-ticket">
+      substituto pensando...
+    </div>
+
+    <!-- Formulário -->
+    <form id="chat-form" class="flex items-center gap-2 border-t border-char-700 p-3 bg-char-800">
+      <input
+        id="chat-input"
+        type="text"
+        autocomplete="off"
+        placeholder="ex: não tenho creme de leite..."
+        class="flex-1 rounded-full bg-char-900 border border-char-700 text-chalk placeholder-chalk/30 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-flame"
+      />
+      <button
+        type="submit"
+        class="bg-flame hover:bg-flame-dim active:scale-95 transition text-char-900 rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg shrink-0"
+        aria-label="Enviar"
+      >
+        →
+      </button>
+    </form>
+  </div>
+
+  <script>
+    const chatWindow = document.getElementById('chat-window');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const typingIndicator = document.getElementById('typing-indicator');
+
+    let history = [];
+
+    function addMessage(text, sender) {
+      const bubble = document.createElement('div');
+      bubble.className =
+        sender === 'user'
+          ? 'ml-auto max-w-[80%] bg-flame text-char-900 font-medium rounded-2xl rounded-br-sm px-4 py-2.5 text-sm'
+          : 'mr-auto max-w-[85%] bg-char-800 border border-char-700 text-chalk rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm whitespace-pre-line';
+      bubble.textContent = text;
+      chatWindow.appendChild(bubble);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    async function iniciarConversa() {
+      try {
+        const res = await fetch('/api/greeting');
+        const data = await res.json();
+        addMessage(data.greeting, 'bot');
+        history.push({ role: 'assistant', content: data.greeting });
+      } catch (err) {
+        addMessage('Não foi possível conectar. Verifique se o servidor está rodando.', 'bot');
+      }
+    }
+
+    async function enviarMensagem(texto) {
+      addMessage(texto, 'user');
+      history.push({ role: 'user', content: texto });
+      typingIndicator.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: history }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          addMessage(data.error || 'Ocorreu um erro ao processar sua mensagem.', 'bot');
+          return;
+        }
+
+        addMessage(data.reply, 'bot');
+        history.push({ role: 'assistant', content: data.reply });
+      } catch (err) {
+        addMessage('Erro de conexão com o servidor.', 'bot');
+      } finally {
+        typingIndicator.classList.add('hidden');
+      }
+    }
+
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const texto = chatInput.value.trim();
+      if (!texto) return;
+      chatInput.value = '';
+      enviarMensagem(texto);
+    });
+
+    iniciarConversa();
+  </script>
+</body>
+</html>
